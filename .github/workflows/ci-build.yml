@@ -182,14 +182,23 @@ jobs:
       - name: Clone
         uses: actions/checkout@v5
 
+      # Added in this fork, for PR #158's FFmpeg video backend. Needed at BUILD time only
+      # for the headers and the pkg-config lookup: the libraries themselves are dlopen'd at
+      # runtime, so a machine without FFmpeg still runs the game and just skips the movies.
+      - name: Dependencies
+        run: brew install ffmpeg pkg-config
+
       - name: Cache
         uses: actions/cache@v5
         with:
           path: out/build/macos
-          key: macos-cmake-v7
+          key: macos-cmake-v8-ffmpeg
 
+      # -DARCANUM_BINK_FFMPEG=ON is the whole point of the dependency above. The option
+      # defaults to OFF upstream, and with it off this build has no video on macOS at all:
+      # bink_compat wraps binkw32.dll, which exists only on Windows.
       - name: Configure
-        run: cmake --preset macos
+        run: cmake --preset macos -DARCANUM_BINK_FFMPEG=ON
 
       - name: Build
         run: cmake --build --preset macos-debug
