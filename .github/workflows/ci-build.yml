@@ -1,6 +1,9 @@
 name: CI
 
 on:
+  # Added in this fork: upstream builds only on push, but this fork exists to publish
+  # releases on demand, which needs a trigger that does not require inventing a commit.
+  workflow_dispatch:
   push:
     branches:
       - main
