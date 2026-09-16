@@ -198,7 +198,7 @@ jobs:
       # defaults to OFF upstream, and with it off this build has no video on macOS at all:
       # bink_compat wraps binkw32.dll, which exists only on Windows.
       - name: Configure
-        run: cmake --preset macos -DARCANUM_BINK_FFMPEG=ON
+        run: cmake --preset macos -DARCANUM_BINK_FFMPEG=ON -DARCANUM_FFMPEG_LIBDIR=/opt/homebrew/lib
 
       - name: Build
         run: cmake --build --preset macos-debug

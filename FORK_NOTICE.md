@@ -34,6 +34,11 @@ them belongs to their authors; this fork only builds them.
   `-DARCANUM_BINK_FFMPEG=ON`. That option defaults to OFF upstream, and with it off there is
   no video on macOS at all, because `bink_compat` wraps `binkw32.dll` and that exists only on
   Windows.
+- `first_party/bink_compat/CMakeLists.txt`: an `ARCANUM_FFMPEG_LIBDIR` override for the
+  directory baked in for `dlopen`. pkg-config on Homebrew reports the build machine's exact
+  Cellar revision (`.../Cellar/ffmpeg/9.0.1_1/lib`), which exists on no other Mac, and the
+  bare-SONAME fallback does not rescue it on Apple Silicon because macOS does not search
+  `/opt/homebrew`. The CI now bakes `/opt/homebrew/lib`, which survives formula revisions.
 
 No other source file has been touched.
 
